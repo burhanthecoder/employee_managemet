@@ -36,7 +36,7 @@ const EmployeeDetails = () => {
                   <p><strong>Phone: {employeeDetails.phone}</strong> </p>
                 </Col>
                 <Col>
-                  {/* <p><strong>Email: {employeeDetails.email}</strong> </p> */}
+                  
                   <p><strong>Work Hours: {employeeDetails.workHours}</strong> </p>
                   <p><strong>Salary Type: {employeeDetails.salaryType}</strong> </p>
                   <p><strong>Salary: {employeeDetails.salary}</strong> </p>

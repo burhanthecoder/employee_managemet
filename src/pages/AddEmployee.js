@@ -1,34 +1,67 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
+import { useParams } from 'react-router-dom';
 
 function AddEmployee() {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [profileImage, setProfileImage] = useState('');
-  const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
-  const [workHours, setWorkHours] = useState('');
-  const [salaryType, setSalaryType] = useState('');
-  const [salary, setSalary] = useState('');
-  const [department, setDepartment] = useState('');
+  const [employeeDetails, setEmployeeDetails] = useState({});
+  let { id } = useParams();
+  
+  useEffect(() => {
+    
+    if (id) {
+      const response = fetch('http://localhost:5000/employee/'+id, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+        },
+      })
+        .then(response => response.json())
+        .then(data => setEmployeeDetails(data));
+    }
+  }, []);
+
+  function handleChange(event) {
+    const { name, value } = event.target;
+    setEmployeeDetails(prevFormData => ({ ...prevFormData, [name]: value }));
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // code to handle form submission
+    
+    const method_ = id ? 'PUT' : 'POST'
+    const url = id? 'http://localhost:5000/employee/'+id:'http://localhost:5000/employee'
+    const response = fetch(url, {
+      method: method_,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(employeeDetails),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        alert('Employee added successfully');
+        window.location.href = '/employee';
+        
+      })
+      .catch((error) => {
+        console.error(error);
+        
+      });
   };
-  
 
   return (
     <Container className="my-5">
       <Row className="justify-content-center">
         <Col md={8}>
-          <Form onSubmit={handleSubmit} className="border p-4">
+          <Form className="border p-4" onSubmit={handleSubmit}>
             <Form.Group controlId="firstName">
               <Form.Label>First Name</Form.Label>
               <Form.Control
                 type="text"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
+                name="firstName"
+                value={employeeDetails.firstName}
+                onChange={(e) => handleChange(e)}
               />
             </Form.Group>
 
@@ -36,18 +69,9 @@ function AddEmployee() {
               <Form.Label>Last Name</Form.Label>
               <Form.Control
                 type="text"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-              />
-            </Form.Group>
-
-            <Form.Group controlId="formBasicImage">
-              <Form.Label>Image</Form.Label>
-              <Form.Control
-                type="file"
-                accept=".jpg, .jpeg, .png"
-                value={profileImage}
-                onChange={(e) => setProfileImage(e.target.value)}
+                name="lastName"
+                value={employeeDetails.lastName}
+                onChange={(e) => handleChange(e)}
               />
             </Form.Group>
 
@@ -55,17 +79,19 @@ function AddEmployee() {
               <Form.Label>Phone</Form.Label>
               <Form.Control
                 type="tel"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                name="phone"
+              
+               value={employeeDetails.phone}
+                onChange={(e) => handleChange(e)}
               />
             </Form.Group>
-
             <Form.Group controlId="email">
               <Form.Label>Email</Form.Label>
               <Form.Control
                 type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                name="email"
+                value={employeeDetails.email}
+                onChange={(e) => handleChange(e)}
               />
             </Form.Group>
 
@@ -73,8 +99,9 @@ function AddEmployee() {
               <Form.Label>Work Hours</Form.Label>
               <Form.Control
                 type="number"
-                value={workHours}
-                onChange={(e) => setWorkHours(e.target.value)}
+                name="workHours"
+                value={employeeDetails.workHours}
+                onChange={(e) => handleChange(e)}
               />
             </Form.Group>
 
@@ -82,8 +109,10 @@ function AddEmployee() {
               <Form.Label>Salary Type</Form.Label>
               <Form.Control
                 as="select"
-                value={salaryType}
-                onChange={(e) => setSalaryType(e.target.value)}
+                name="salaryType"
+                value={employeeDetails.salaryType}
+
+               onChange={(e) => handleChange(e)}
               >
                 <option value="hourly">Hourly</option>
                 <option value="salary">Salary</option>
@@ -95,8 +124,9 @@ function AddEmployee() {
               <Form.Label>Salary</Form.Label>
               <Form.Control
                 type="number"
-                value={salary}
-                onChange={(e) => setSalary(e.target.value)}
+                name='salary'
+                value={employeeDetails.salary}
+                onChange={(e) => handleChange(e)}
               />
             </Form.Group>
 
@@ -104,8 +134,9 @@ function AddEmployee() {
               <Form.Label>Department</Form.Label>
               <Form.Control
                 type="text"
-                value={department}
-                onChange={(e) => setDepartment(e.target.value)}
+                name='department'
+                value={employeeDetails.department}
+                onChange={(e) => handleChange(e)}
               />
             </Form.Group>
 
@@ -119,4 +150,3 @@ function AddEmployee() {
 
 export default AddEmployee;
 
-       

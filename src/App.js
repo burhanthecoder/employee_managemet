@@ -13,9 +13,11 @@ function App() {
     <div>
       <MainNavigation />
       <Routes>
+      <Route path="/add-employee/:id" element={<AddEmployee />} />
+       
         <Route path="/add-employee" element={<AddEmployee />} />
         <Route path="/employee" element={<Employee />} />
-        <Route path="/employee-details" element={<EmployeeDetails />} />
+        <Route path="/employee-details/:id" element={<EmployeeDetails />} />
        
       </Routes>
     </div>

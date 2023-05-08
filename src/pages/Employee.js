@@ -53,7 +53,7 @@ function Employee() {
         {employees.map(employee => (
           <div key={employee.id} className="col-md-6 col-lg-4 mb-4">
             <Card className="h-100 border-0 shadow-sm">
-              {/* <Card.Img variant="top" src={employee.profileImage} style={{ height: "200px", objectFit: "cover" }} /> */}
+            
               <Card.Body className="p-4">
                 <Card.Title className="mb-3">{employee.firstName} {employee.lastName} </Card.Title>
                 <Card.Title className="mb-3">{employee.phone}</Card.Title>
